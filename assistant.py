@@ -18,8 +18,8 @@ st.set_page_config(page_title="My Personal Assistant", layout="wide", page_icon=
 def load_data():
     try:
         # Loading your daily routine (no dates) and your vault
-        routine = pd.read_csv('/content/drive/MyDrive/dailyroutine.csv')
-        vault = pd.read_csv('/content/drive/MyDrive/personal detail.csv')
+        routine = pd.read_csv('dailyroutine.csv')
+        vault = pd.read_csv('personal detail.csv')
         return routine, vault
     except FileNotFoundError as e:
         st.error(f"File not found: {e.filename}. Please check your GitHub files.")
