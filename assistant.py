@@ -9,8 +9,8 @@ st.set_page_config(page_title="My Personal Assistant", layout="wide", page_icon=
 def load_data():
     try:
         # Relative paths for Streamlit Cloud (no /content/drive/)
-        routine = pd.read_csv('dailyroutine.csv')
-        vault = pd.read_csv('personal details.csv')
+        routine = pd.read_csv('dailyroutine.csv.csv')
+        vault = pd.read_csv('personal details.csv.csv')
         return routine, vault
     except FileNotFoundError:
         st.error("CSV files not found. Ensure they are uploaded to the same GitHub folder.")
