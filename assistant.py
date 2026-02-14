@@ -17,7 +17,7 @@ def load_data():
         return None, None
 
 def main():
-    st.title("👤 Personal Assistant")
+    st.title("Hey Saksham")
     
     now_time = datetime.datetime.now().strftime("%H:%M")
     st.write(f"**Current Time:** {now_time}")
@@ -25,10 +25,10 @@ def main():
     routine, vault = load_data()
 
     if routine is not None and vault is not None:
-        tab1, tab2, tab3 = st.tabs(["📅 Daily Routine", "🔑 Vault", "🔍 Search"])
+        tab1, tab2, tab3 = st.tabs([" Daily Routine", " Your Details", "🔍 "])
 
         with tab1:
-            st.header("My Every Day Tasks")
+            st.header("Here Are Your Daily Tasks")
             
             # IMPROVED TIME SORTING:
             # errors='coerce' handles cases where time format might be slightly off
