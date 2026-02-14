@@ -3,24 +3,22 @@ import pandas as pd
 import datetime
 
 # --- CONFIGURATION ---
-st.set_page_config(page_title="My Personal Assistant", layout="wide", page_icon="👤")
+st.set_page_config(page_title="Personal Assistant", layout="wide", page_icon="👤")
 
 # --- DATA LOADING ---
 def load_data():
     try:
-        # Relative paths: Streamlit Cloud only sees files inside your GitHub repo
+        # Relative paths for Streamlit Cloud deployment
         routine = pd.read_csv('daily_routine.csv')
         vault = pd.read_csv('personal_vault.csv')
         return routine, vault
     except FileNotFoundError:
-        # This error shows if the filenames on GitHub don't match exactly
         st.error("CSV files not found. Ensure filenames match exactly on GitHub.")
         return None, None
 
 def main():
     st.title("👤 Personal Assistant")
     
-    # Display current local time
     now_time = datetime.datetime.now().strftime("%H:%M")
     st.write(f"**Current Time:** {now_time}")
 
@@ -32,12 +30,14 @@ def main():
         with tab1:
             st.header("My Every Day Tasks")
             
-            # TIME SORTING LOGIC:
-            # We convert the text time to a real time object so 8:00 comes before 10:15
-            routine['Time_obj'] = pd.to_datetime(routine['Time'], format='%H:%M').dt.time
+            # IMPROVED TIME SORTING:
+            # errors='coerce' handles cases where time format might be slightly off
+            routine['Time_obj'] = pd.to_datetime(routine['Time'], format='%H:%M', errors='coerce').dt.time
+            
+            # Sort and clean up
             routine_sorted = routine.sort_values(by='Time_obj').drop(columns=['Time_obj'])
             
-            # Displaying the properly ordered table
+            # Display sorted table
             st.table(routine_sorted)
 
         with tab2:
@@ -48,7 +48,6 @@ def main():
             st.header("Smart Search")
             query = st.text_input("Find anything in your vault...")
             if query:
-                # Search across all columns in the vault
                 results = vault[vault.apply(lambda row: query.lower() in row.astype(str).str.lower().values, axis=1)]
                 if not results.empty:
                     st.table(results)
