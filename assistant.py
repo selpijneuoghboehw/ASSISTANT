@@ -27,7 +27,7 @@ def load_data():
 
 # --- MAIN APP ---
 def main():
-    st.title("👤 Personal Assistant")
+    st.title("Hi Saksham")
 
     # Show current time for quick reference
     now = datetime.datetime.now().strftime("%H:%M")
@@ -37,13 +37,19 @@ def main():
 
     if routine is not None and vault is not None:
         # Create Navigation Tabs for Mobile
-        tab1, tab2, tab3 = st.tabs(["📅 Daily Routine", "🔑 Vault", "🔍 Search"])
+        tab1, tab2, tab3 = st.tabs(["Daily Routine", "Your Details", "🔍 "])
 
         with tab1:
-            st.header("My Every Day Tasks")
-            # Sort by Time automatically so the morning tasks stay on top
-            routine_sorted = routine.sort_values(by='Time')
-            st.table(routine_sorted)
+    st.header("My Every Day Tasks")
+    
+    # 1. Convert the 'Time' column to actual datetime objects
+    routine['Time'] = pd.to_datetime(routine['Time'], format='%H:%M').dt.time
+    
+    # 2. Now sort it (8:00 will now correctly come before 10:15)
+    routine_sorted = routine.sort_values(by='Time')
+    
+    # 3. Display the properly ordered table
+    st.table(routine_sorted)
 
         with tab2:
             st.header("Personal Data Vault")
